@@ -26,7 +26,7 @@ function sendToClients(data, incomingSocket) {
   // incomingSocket: socket from companion on which data was received.
 
   wsServer.clients.forEach(function each(client) {
-    if (client!==incomingSocket && client.readyState===ws.OPEN) {
+    if (client !== incomingSocket && client.readyState === ws.OPEN) {
       //console.log(`server.js: sending to a client; data=${data}`) // it would be nice to include client.url, but this is often undefined
       client.send(data)
     }
