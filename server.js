@@ -1,4 +1,4 @@
-// Version: hsdv (heart-rate, socket, DoryNode, view)
+//// Version: hsdv (heart-rate, socket, DoryNode, view)
 
 const ws = require('ws')                        // WebSocket module
 
