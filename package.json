@@ -1,9 +1,19 @@
 {
-  "name": "real-time",
+  "name": "fitbit-real-time",
   "version": "1.0.0",
-  "private": true,
+  "description": "Heroku-hosted server for receiving and onforwarding data from Fitbit OS devices",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gondwana Software",
   "license": "UNLICENSED",
+  "engines": {
+    "node": "10.x"
+  },
   "dependencies": {
-    "ws": "^7.2.1"
+    "bufferutil": "^4.0.1",
+    "utf-8-validate": "^5.0.2",
+    "ws": "^7.2.3"
   }
 }
