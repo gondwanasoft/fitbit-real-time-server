@@ -59,11 +59,13 @@ httpServer.listen(httpPort, (err) => {
   }
 
   console.log(`HTTP server is listening on port ${httpPort}`)
-})//******************************************************************************
+})
+
+//******************************************************************************
 //*************************** Receive message from companion via WebSocket *****
 //******************************************************************************
 
-const wsServer = new ws.Server({server:server})  // WebSocket server
+const wsServer = new ws.Server({server:httpServer})  // WebSocket server
 
 wsServer.on('connection', function connection(socket, request) {
   console.log(`server.js: connection from ${request.connection.remoteAddress}`)
