@@ -1,4 +1,4 @@
-// Version: afds (accelerometer, fetch, DoryNode, save)
+// Version: a_d_ (accelerometer, socket/fetch, DoryNode, view/save)
 
 const fs = require('fs')                        // File System module
 const http = require('http')                    // http server module
