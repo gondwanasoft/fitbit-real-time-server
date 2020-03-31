@@ -9,7 +9,7 @@ const ws = require('ws')                        // WebSocket module
 //******************************************************************************
 
 const wsServer = new ws.Server({ port: 8080 })  // WebSocket server
-const fileStream = fs.createWriteStream('data.csv')
+let fileStream = fs.createWriteStream('data.csv')
 
 wsServer.on('connection', function connection(socket, request) {
   console.log(`server.js: connection from ${request.connection.remoteAddress}`)
@@ -24,14 +24,20 @@ function appendToFile(data) {
   // Unpack data string and save as CSV (for easy importing into a spreadsheet or database).
   // data can contain any number of values, so this function will work for different types of sensors.
 
-  let dataObject = JSON.parse(data)
-  let dataArray = Object.values(dataObject)
-  //console.log(`appendToFile(): ${data}; ${dataArray}`)
-  let csvString = String(dataArray[0])            // put the first data value into the CSV record (line)
-  for (let i = 1; i < dataArray.length; i++) {    // append remaining values, with commas before each
-    csvString += ',' + dataArray[i]
+  if (!fileStream.writable) {
+    // Could possibly happen while file is being downloaded in response to GET request.
+    console.log(`server.js appendToFile(): file isn't writable - dropping data batch`)
+    return
   }
-  fileStream.write(`${csvString}\n`)
+
+  let readingObject = JSON.parse(data)
+  let readingArray = Object.values(readingObject)
+  //console.log(`appendToFile(): ${data}; ${readingArray}`)
+  let csvString = String(readingArray[0])            // put the first data value into the CSV record (line)
+  for (let i = 1; i < readingArray.length; i++) {    // append remaining values, with commas before each
+    csvString += ',' + readingArray[i]
+  }
+  fileStream.write(`${csvString}\n`)   // should check for success
 }
 
 //******************************************************************************
@@ -60,10 +66,15 @@ const httpPort = 3000
 const requestHandler = (request, response) => {
   // If a GET request is received, respond by sending data.csv
   //console.log(`server.js requestHandler(): received ${request.method}`)
+
   if (request.method == 'GET') {
+    fileStream.end()  // close the file so no more batches can be written to it
+
     response.writeHead(200, {'Content-Type': 'text/csv'})
     let savedData = fs.readFileSync('data.csv')
     response.end(savedData)
+
+    fileStream = fs.createWriteStream('data.csv')   // reopen file for subsequent batches
   }
 }
 
