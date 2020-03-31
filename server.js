@@ -69,7 +69,7 @@ const requestHandler = (request, response) => {
   // If a GET request is received, respond by sending data.csv
   //console.log(`server.js requestHandler(): received ${request.method}`)
 
-  if (request.method == 'GET') {
+  if (request.method == 'GET') {  // respond by sending data.csv
     fileStream.end()  // close the file so no more batches can be written to it
 
     response.writeHead(200, {'Content-Type': 'text/csv'})
