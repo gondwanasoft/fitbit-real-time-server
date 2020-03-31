@@ -2,11 +2,11 @@
 
 const ws = require('ws')                        // WebSocket module
 
-const wsServer = new ws.Server({ port: 8080 })  // WebSocket server
-
 //******************************************************************************
 //*************************** Receive message from companion via WebSocket *****
 //******************************************************************************
+
+const wsServer = new ws.Server({ port: 8080 })  // WebSocket server
 
 wsServer.on('connection', function connection(socket, request) {
   console.log(`server.js: connection from ${request.connection.remoteAddress}`)
